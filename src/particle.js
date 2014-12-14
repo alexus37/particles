@@ -1,4 +1,13 @@
-function Particle() {}
+function Particle() {
+    this.m_Position = THREE.Vector3(0.0, 0.0, 0.0);
+    this.m_Velocity = THREE.Vector3(0.0, 0.0, 0.0);
+    this.m_Color =  THREE.Vector3(0.0, 0.0, 0.0, 0.0);
+    this.m_fRotate = 0.0;
+    this.m_fsize = 1.0;
+    this.m_fAge = 0.0;
+    this.m_fLifeTime = 1.0;
+    
+}
 Particle.prototype = {
     //set the elements of the particle
     setElements: function(position, velocity, color, roation, size, age, lifetime) {
@@ -22,7 +31,15 @@ Particle.prototype = {
 
         return this;
     },
-
+    init: function() {
+         this.m_Position = new THREE.Vector3(0.0, 0.0, 0.0);
+        this.m_Velocity = new THREE.Vector3(0.0, 0.0, 0.0);
+        this.m_Color =  new THREE.Vector3(0.0, 0.0, 0.0, 0.0);
+        this.m_fRotate = 0.0;
+        this.m_fsize = 1.0;
+        this.m_fAge = 0.0;
+        this.m_fLifeTime = 1.0;
+    },
     // Returns a copy of the particle
     copy: function() {
         return Particle.create(this.m_Position, this.m_Velocity, this.m_Color, this.m_fRotate, this.m_fsize, this.m_fAge, this.m_fLifeTime);
@@ -30,9 +47,10 @@ Particle.prototype = {
 };
   
 // Constructor function
-Particle.create = function(position, velocity, color, roation, size, age, lifetime) {
+Particle.create = function() {
     var P = new Particle();
-    return P.setElements(position, velocity, color, roation, size, age, lifetime);
+    P.init()
+    return P;
 };
 
 // Utility functions

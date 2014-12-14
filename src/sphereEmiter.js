@@ -19,8 +19,25 @@ SphereEmitter.prototype = {
 
         return this;
     },
+    setRadius: function(radius) {
+        this.MaximumRadius = radius;
+        return this;
+    },
+    setOrigin: function(origin) {
+        this.Origin = origin;
+        return this;
+    },
+    getRadius: function() {
+        return this.MaximumRadius;
+    },
+    getOrigin: function() {
+        return this.Origin;
+    },
     
-    EmitParticle function(particle) {
+    
+    
+    EmitParticle: function() {
+        var particle = $P();
         var inclination = THREE.Math.degToRad(THREE.Math.randFloat(this.MinInclination, this.MaxInclination));
         var azimuth = THREE.Math.degToRad( THREE.Math.randFloat(this.MinAzimuth, this.MaxAzimuth ) );
 
@@ -36,7 +53,7 @@ SphereEmitter.prototype = {
 
         var vector = new THREE.Vector3( X, Y, Z );
 
-        particle.m_Position = Origin.add(vector.multiplyScalar(radius));
+        particle.m_Position.addVectors(this.Origin, (vector.multiplyScalar(radius)));
         particle.m_Velocity = vector.multiplyScalar(speed);
 
         particle.m_fLifeTime = lifetime;
@@ -44,14 +61,24 @@ SphereEmitter.prototype = {
     
         return particle;
     },
-
+    
+    EmitParticles: function(numberOfParitcles) {
+        var paricles = new Array(numberOfParitcles); 
+        
+        for(var i = 0; i < numberOfParitcles; i++) {
+            paricles[i] = this.EmitParticle();
+        }
+        
+        return paricles;
+    }
 
 };
   
 // Constructor function
 SphereEmitter.create = function()  {
     var SE = new SphereEmitter();
-    return SE.setElements();
+    SE.init()
+    return SE;
 };
 
 // Utility functions
