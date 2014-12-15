@@ -2,7 +2,7 @@ function Particle() {
     this.m_Position = new THREE.Vector3(0.0, 0.0, 0.0);
     this.m_Velocity = new THREE.Vector3(0.0, 0.0, 0.0);
     this.m_Acceleration = new THREE.Vector3(0.0, 0.0, 0.0);
-    this.m_Color =  new THREE.Color(0.0, 0.0, 0.0);
+    this.m_Color =  new THREE.Color("#00ff7f");
     this.m_fRotate = 0.0;
     this.m_fsize = 1.0;
     this.m_fAge = 0.0;
