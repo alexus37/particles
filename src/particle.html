@@ -73,8 +73,9 @@
 			scene.add( light );
             
 			//SKYBOX
-            var imagePrefix = "images/dawnmountain-";
-	        var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+            var imagePrefix = "images/sky-";
+	        //var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+            var directions  = ["xneg", "xpos", "ypos", "yneg", "zpos", "zneg"];
             var imageSuffix = ".png";
             var skyGeometry = new THREE.CubeGeometry( 5000, 5000, 5000 );	
             var materialArray = [];
@@ -125,7 +126,8 @@
                 MaxLifetime : 10,
                 emitter: "SPHERE",
                 restart: function() { restartEngine() },
-                reset: function() { resetEngine() }
+                reset: function() { resetEngine() },
+                showInstr: function() { alert("Use ASWD or arrow keys to naviged. Left and right mous ekeys are changing the viewing perspective. The mousewheel is for zooming ") }
             };
             var folder0 = gui.addFolder('Particle Parameters');
             var color = folder0.addColor( parameters, 'color' ).name('Color').listen();
@@ -192,6 +194,7 @@
             
             gui.add( parameters, 'reset' ).name("Reset Parameters");
             gui.add( parameters, 'restart' ).name("Restart the engine");
+            gui.add( parameters, 'showInstr' ).name("Show instructions");
 	
             gui.open();
             
