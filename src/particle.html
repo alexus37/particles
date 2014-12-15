@@ -30,7 +30,39 @@
 		var camera, controls, scene, renderer;
         var ParticleEngine;
         var gui;
-        var parameters;
+        var parameters = {
+                x: 0, y: 0, z: 0,
+                timeFactor : 0.0001,
+                numberOfParticles : 3,
+                color: "#00ff7f", // color (change "#" to "0x")
+                //opacity: 1, 
+                //visible: true,
+                MinimumRadius : 15,
+                MaximumRadius : 20,
+        
+                MinInclination : 0,
+                MaxInclination : 180,
+
+                MinAzimuth : 0,
+                MaxAzimuth : 360,
+                MinWidth : -10,
+                MaxWidth : 10,
+
+                MinHeight : -10,
+                MaxHeight : 10,
+
+                MinDepth : -10,
+                MaxDepth : 10,
+
+                MinSpeed : 0,
+                MaxSpeed : 0,
+                MinLifetime : 3,
+                MaxLifetime : 10,
+                emitter: "SPHERE",
+                restart: function() { restartEngine() },
+                reset: function() { resetEngine() },
+                showInstr: function() { alert("Use ASWD or arrow keys to naviged. Left and right mous ekeys are changing the viewing perspective. The mousewheel is for zooming ") }
+            };
         
 		// start scene
 		init();
@@ -90,45 +122,13 @@
             
             //PARTICLES
             ParticleEngine = new ParticleEngine();
+            updateEngine();
             ParticleEngine.createParticles();
 			window.addEventListener( 'resize', onWindowResize, false );
             
             //GUI
             gui = new dat.GUI();
-            parameters = 
-            {
-                x: 0, y: 0, z: 0,
-                timeFactor : 0.00005,
-                numberOfParticles : 100,
-                color: "#00ff7f", // color (change "#" to "0x")
-                //opacity: 1, 
-                //visible: true,
-                MinimumRadius : 45,
-                MaximumRadius : 50,
-        
-                MinInclination : 0,
-                MaxInclination : 180,
-
-                MinAzimuth : 0,
-                MaxAzimuth : 360,
-                MinWidth : -10,
-                MaxWidth : 10,
-
-                MinHeight : -10,
-                MaxHeight : 10,
-
-                MinDepth : -10,
-                MaxDepth : 10,
-
-                MinSpeed : 25,
-                MaxSpeed : 75,
-                MinLifetime : 3,
-                MaxLifetime : 10,
-                emitter: "SPHERE",
-                restart: function() { restartEngine() },
-                reset: function() { resetEngine() },
-                showInstr: function() { alert("Use ASWD or arrow keys to naviged. Left and right mous ekeys are changing the viewing perspective. The mousewheel is for zooming ") }
-            };
+           
             var folder0 = gui.addFolder('Particle Parameters');
             var color = folder0.addColor( parameters, 'color' ).name('Color').listen();
             

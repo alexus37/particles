@@ -7,7 +7,7 @@ function Particle() {
     this.m_fsize = 1.0;
     this.m_fAge = 0.0;
     this.m_fLifeTime = 1.0;
-    this.m_mass = 0.0;
+    this.m_mass = 1.0;
     this.m_alive = 1.0;
     
 }

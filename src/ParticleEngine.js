@@ -125,10 +125,12 @@ ParticleEngine.prototype.updateParticles = function() {
     this.lastTime = curTime;
             
     this.particleGeometry  = new THREE.Geometry();
+    
+    this.simpleNBody(deltaTime);
 
     for ( i = 0; i < this.particleArray.length; i ++ ) {
         if (this.particleArray[i].m_alive == 1.0) {
-            this.particleArray[i].update(deltaTime);
+            //this.particleArray[i].update(deltaTime);
             var vertex = new THREE.Vector3();
             vertex = this.particleArray[i].m_Position;
             this.particleGeometry.vertices.push( vertex );
@@ -144,17 +146,55 @@ ParticleEngine.prototype.updateParticles = function() {
     var values_color = this.particleMaterial.attributes.customColor.value;
     
     for ( var v = 0; v < vertices.length; v++ ) {
-        values_size[ v ] = this.particleArray[v].m_fsize;
+        values_size[ v ] = this.particleArray[v].m_fsize * this.particleArray[v].m_mass * (1.0 / 100.0);
         values_color[ v ] = this.particleArray[v].m_Color;
     }
-    
+    /*
     for( var i = 0; i < this.particleMaterial.attributes.size.value.length; i++ ) {
-				this.particleMaterial.attributes.size.value[ i ] = 14 + 13 * Math.sin( 0.1 * i + curTime );
-			}
+        this.particleMaterial.attributes.size.value[ i ] = 14 + 13 * Math.sin( 0.1 * i + curTime );
+    }
+    */
     this.particleMaterial.attributes.size.needsUpdate = true;
     scene.add( this.particleMesh );
 }
 
+ParticleEngine.prototype.simpleNBody = function(dt) {
+    var eps = 0.01;
+    var d = new THREE.Vector3();
+    var newPositions = new Array(this.particleArray.length);
+    
+    //loop over all particles
+    for(var i = 0; i < this.particleArray.length; i++) {
+        // acceleration vector that will be used to accumulate the per-particle acceleration
+        var a = new THREE.Vector3(0.0, 0.0, 0.0);
+        for(var j = 0; j < this.particleArray.length; j++) {
+            //calculates distance vector between particle "j" and particle "i" 
+            if (i != j) {
+                d.subVectors(this.particleArray[j].m_Position.clone(), this.particleArray[i].m_Position.clone());
+                d.z += eps;
+                var invr = 1.0 / d.length();
+
+                var invr3 = invr * invr * invr;
+
+                var f = this.particleArray[j].m_mass * invr3;
+                a.add(d.clone().multiplyScalar(f));
+            }
+        }
+        /* update position of particle "i" */
+        newPositions[i] = this.particleArray[i].m_Position.clone();
+        newPositions[i].add(this.particleArray[i].m_Velocity.clone().multiplyScalar(dt));
+        newPositions[i].add(a.clone().multiplyScalar(0.5 * dt  * dt));
+        /* update velocity of particle "i" */
+        this.particleArray[i].m_Velocity.add(a.clone().multiplyScalar(dt));
+    }
+    /* copy updated positions back into original arrays */
+    for(var i = 0; i < this.particleArray.length; i++) {
+        this.particleArray[i].m_Position = newPositions[i];
+    }
+    
+    
+    
+}
 
 
 

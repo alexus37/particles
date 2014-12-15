@@ -44,6 +44,7 @@ SphereEmitter.prototype = {
         var radius = THREE.Math.randFloat( this.MinimumRadius, this.MaximumRadius );
         var speed = THREE.Math.randFloat( this.MinSpeed, this.MaxSpeed );
         var lifetime = THREE.Math.randFloat( this.MinLifetime, this.MaxLifetime );
+        
 
         var sInclination = Math.sin( inclination );
 
@@ -58,6 +59,7 @@ SphereEmitter.prototype = {
 
         particle.m_fLifeTime = lifetime;
         particle.m_fAge = 0;
+        particle.m_mass = THREE.Math.randFloat(100 , 1000);
     
         return particle;
     },
